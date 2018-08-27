@@ -68,6 +68,29 @@ void Ssd1309::line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2) {
 	}
 }
 
+void Ssd1309::hline(uint8_t x1, uint8_t x2, uint8_t y) {
+	for (uint8_t x=x1;x<=x2;x++) {
+		pixel(x, y);
+	}
+}
+
+void Ssd1309::vline(uint8_t x, uint8_t y1, uint8_t y2) {
+	for (uint8_t y=y1;y<=y2;y++) {
+		pixel(x, y);
+	}
+}
+
+void Ssd1309::sprite(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t* sprite) {
+	for (uint8_t i=0;i<w;i++) {
+		for (uint8_t j=0;j<h;j++) {
+			uint8_t z=j*w+i;
+			if (sprite[z/8] & 1<<(7-z%8)) {
+				pixel(x+i, y+j);
+			}
+		}
+	}
+}
+
 void Ssd1309::print(uint8_t x, uint8_t y, char* str) {
 	uint8_t c=0;
 	while (str[c] != '\0') {
@@ -75,7 +98,7 @@ void Ssd1309::print(uint8_t x, uint8_t y, char* str) {
 			uint8_t pattern = font[str[c] - 32][i];
 			for (uint8_t d = 0; d<8;d++) {
 				if (pattern & (1<<d)) {
-					pixel(x+c*7+i,y+d);
+					pixel(x+c*6+i,y+d);
 				}
 			}
 		}
