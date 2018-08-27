@@ -21,6 +21,8 @@ void setup() {
 uint8_t data = 0;
 
 void loop() {
+	delay(100);
 	lcd.clearBuffer();
+	lcd.pixel(5,5);
 	lcd.display();
 }

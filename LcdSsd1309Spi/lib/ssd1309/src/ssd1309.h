@@ -9,8 +9,8 @@ class Ssd1309 {
 		Ssd1309(uint8_t chipSelectPin, uint8_t readWritePin, uint8_t resetPin);
 		void init();
 		void clearBuffer();
+		void pixel(uint8_t x, uint8_t y);
 		void display();
-
 
 	public :
 		char buffer[1024];
