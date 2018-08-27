@@ -11,8 +11,9 @@ class Ssd1309 {
 		void clearBuffer();
 		void pixel(uint8_t x, uint8_t y);
 		void display();
+		void print(uint8_t x, uint8_t y, char* str);
 
-	public :
+	private :
 		char buffer[1024];
 		SPISettings setting;
 		uint8_t cs, rw, rs;

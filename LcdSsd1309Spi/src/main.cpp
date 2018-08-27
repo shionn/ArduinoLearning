@@ -42,7 +42,9 @@ void loop() {
 	delay(100);//*/
 
 	lcd.clearBuffer();
+	lcd.print(0,0, "Bonjour !");
 	lcd.pixel(x, y);
+	lcd.pixel(127, 63);
 	lcd.display();
 
 	x+=dx;
