@@ -40,7 +40,7 @@ void Ssd1309::init() {
 	this->sendCommand(0xA6 | 0x00); // Inverted_Display Color (00 : normal, 01 : inverted)
 	this->sendCommand(0xAF); // display on
 	SPI.endTransaction();
-	delay(1000);
+	delay(100);
 }
 
 void Ssd1309::clearBuffer() {
@@ -54,6 +54,18 @@ void Ssd1309::pixel(uint8_t x, uint8_t y) {
 	uint8_t page = 8 - y / 8;
 	uint8_t row = 7 - y % 8;
 	buffer[page*128-x-1] |= 1<<row;
+}
+
+void Ssd1309::line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2) {
+	if (x2-x1 > y2-y1) {
+		for (uint8_t x = x1;x<=x2;x++) {
+			pixel(x,y1+(y2-y1)*(x-x1+1)/(x2-x1));
+		}
+	} else {
+		for (uint8_t y = y1;y<=y2;y++) {
+			pixel(x1+(x2-x1)*(y-y1+1)/(y2-y1),y);
+		}
+	}
 }
 
 void Ssd1309::print(uint8_t x, uint8_t y, char* str) {

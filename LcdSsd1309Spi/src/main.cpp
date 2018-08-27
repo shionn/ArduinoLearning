@@ -30,7 +30,11 @@ void loop() {
 	lcd.clearBuffer();
 	lcd.print(0,0, "Bonjour !");
 	lcd.pixel(x, y);
-	lcd.pixel(127, 63);
+	lcd.line(0,63,127, 63);
+	lcd.line(10,20,120,50);
+	lcd.line(20,10,40,50);
+	lcd.line(50,20,120,20);
+	lcd.line(5,15,5,60);
 	lcd.display();
 
 	x+=dx;
