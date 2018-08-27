@@ -45,8 +45,6 @@ void setup() {
 
 	SPI.begin();
 	SPI.beginTransaction(setting);
-//	sendCommand(0xA4); // display on/off ?
-//	sendCommand(0xA5); // display on/off ?
 	sendCommand(0xAE); // display off
 	sendCommand(0xD5, 0x80); // display clock
 	sendCommand(0xA8, 0x3F); // Multiplex ratio
@@ -65,26 +63,21 @@ void setup() {
 	sendCommand(0xAF); // display on
 	SPI.endTransaction();
 }
-uint8_t data = 0;
+uint8_t data = 0x00;
 
 void loop() {
 	SPI.beginTransaction(setting);
-	sendCommand(0xB0); // page 0
-	sendCommand(0x00); // lower column start
-	sendCommand(0x10); // high column start
-	digitalWrite(RW, HIGH);
-	digitalWrite(CS, LOW);
-	for (int i=0;i<128;i++)
-		SPI.transfer(0x0F);
-	digitalWrite(CS, HIGH);
-
-	sendCommand(0xB0+0x01); // page 1
-	sendCommand(0x00); // lower column start
-	sendCommand(0x10); // high column start
-	digitalWrite(RW, HIGH);
-	digitalWrite(CS, LOW);
-	for (int i=0;i<128;i++)
-		SPI.transfer(0xAA);
-	digitalWrite(CS, HIGH);
+	for (uint8_t page = 0; page<8; page++) {
+		sendCommand(0xB0+page); // page 0
+		sendCommand(0x00); // lower column start
+		sendCommand(0x10); // high column start
+		digitalWrite(RW, HIGH);
+		digitalWrite(CS, LOW);
+		for (int i=0;i<128;i++)
+			SPI.transfer(data);
+		digitalWrite(CS, HIGH);
+	}
 	SPI.endTransaction();
+	data++;
+	delay(200);
 }
