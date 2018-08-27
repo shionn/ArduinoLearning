@@ -26,20 +26,6 @@ int dx = 1;
 int dy = 1;
 
 void loop() {
-/*	SPI.beginTransaction(lcd.setting);
-	for (uint8_t page = 0; page<8; page++) {
-		lcd.sendCommand(0xB0+page); // page 0
-		lcd.sendCommand(0x00); // lower column start
-		lcd.sendCommand(0x10); // high column start
-		digitalWrite(RW, HIGH);
-		digitalWrite(CS, LOW);
-		for (int i=0;i<128;i++)
-			SPI.transfer(data);
-		digitalWrite(CS, HIGH);
-	}
-	SPI.endTransaction();
-
-	delay(100);//*/
 
 	lcd.clearBuffer();
 	lcd.print(0,0, "Bonjour !");
@@ -53,5 +39,4 @@ void loop() {
 	if (x<=0) dx=1;
 	if (y>=63) dy=-1;
 	if (y<=0) dy = 1;
-	delay(2);
 }

@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <SPI.h>
+#include "fonts.h"
 
 class Ssd1309 {
 	public :
