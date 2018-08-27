@@ -16,10 +16,10 @@ void Ssd1309::init() {
 	digitalWrite(cs, LOW);
 	digitalWrite(rs, HIGH);
 	digitalWrite(rs, LOW);
-	delay(500);
+	delay(100);
 	digitalWrite(rs, HIGH);
 	digitalWrite(cs, HIGH);
-	delay(1000);
+	delay(100);
 
 	SPI.begin();
 	SPI.beginTransaction(setting);
@@ -44,7 +44,7 @@ void Ssd1309::init() {
 }
 
 void Ssd1309::clearBuffer() {
-	for (uint8_t i=0;i<1024;i++) {
+	for (uint16_t i=0;i<1024;i++) {
 		buffer[i] = 0x00;
 	}
 }
@@ -52,20 +52,19 @@ void Ssd1309::clearBuffer() {
 void Ssd1309::pixel(uint8_t x, uint8_t y) {
 	uint8_t page = y / 8;
 	uint8_t row = y % 8;
-	buffer[page+x] |= 1<<row;
+	buffer[page*128+x] |= 1<<row;
 }
 
 void Ssd1309::display() {
 	SPI.beginTransaction(setting);
 	for (uint8_t page = 0;page <8; page++) {
 		sendCommand(0xB0+page);
-//		sendCommand(0x00); // lower column start
-//		sendCommand(0x10); // high column start
+		sendCommand(0x00); // lower column start
+		sendCommand(0x10); // high column start
 		digitalWrite(rw, HIGH);
 		digitalWrite(cs, LOW);
-		for (uint8_t x=0;x<128;x++) {
-			SPI.transfer(0x0F);
-		}
+		for (uint8_t x=0;x<128;x++)
+			SPI.transfer(buffer[page*128+x]);
 		digitalWrite(cs, HIGH);
 	}
 	SPI.endTransaction();
@@ -76,7 +75,6 @@ void Ssd1309::sendCommand(uint8_t data) {
 	digitalWrite(cs, LOW);
 	SPI.transfer(data);
 	digitalWrite(cs, HIGH);
-	delay(10);
 }
 
 void Ssd1309::sendCommand(uint8_t data, uint8_t value) {
@@ -85,5 +83,4 @@ void Ssd1309::sendCommand(uint8_t data, uint8_t value) {
 	SPI.transfer(data);
 	SPI.transfer(value);
 	digitalWrite(cs, HIGH);
-	delay(10);
 }
