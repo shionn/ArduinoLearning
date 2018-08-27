@@ -35,7 +35,7 @@ void Ssd1309::init() {
 	this->sendCommand(0x81,0xCF); // contrast
 //	this->sendCommand(0xD9,0xF1); // pre charge period (resou le probleme de pixel mal allumé)
 //	this->sendCommand(0xDB,0x40); // VCom lvl commande ?
-//	this->sendCommand(0xA4 | 0x00); // entire display on (00 : normal, 01 : entire on)
+	this->sendCommand(0xA4); // entire display on (0xA4 : normal, OxA5 : entire on)
 //	this->sendCommand(0xA6 | 0x00); // Inverted_Display (00 : normal, 01 : inverted)
 	this->sendCommand(0xAF); // display on
 	SPI.endTransaction();
@@ -55,8 +55,8 @@ void Ssd1309::display() {
 //		sendCommand(0x10); // high column start
 		digitalWrite(rw, HIGH);
 		digitalWrite(cs, LOW);
-	for (char l=0;l<128;l++) {
-			SPI.transfer(0x00);
+		for (char l=0;l<128;l++) {
+			SPI.transfer(0x0F);
 		}
 		digitalWrite(cs, HIGH);
 	}
